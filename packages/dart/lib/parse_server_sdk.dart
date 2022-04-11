@@ -139,8 +139,11 @@ class Parse {
 
   bool hasParseBeenInitialized() => _hasBeenInitialized;
 
-  Future<ParseResponse > healthCheck(
-      {bool? debug, ParseClient? client, bool? sendSessionIdByDefault}) async {
+  Future<ParseResponse> healthCheck(
+      {bool? debug,
+      ParseClient? client,
+      bool? sendSessionIdByDefault,
+      ParseNetworkOptions? options}) async {
     final bool _debug = isDebugEnabled(objectLevelDebug: debug);
 
     final ParseClient _client = client ??
@@ -153,8 +156,9 @@ class Parse {
     const ParseApiRQ type = ParseApiRQ.healthCheck;
 
     try {
-      final ParseNetworkResponse response =
-          await _client.get('${ParseCoreData().serverUrl}$keyEndPointHealth');
+      final ParseNetworkResponse response = await _client.get(
+          '${ParseCoreData().serverUrl}$keyEndPointHealth',
+          options: options);
       return handleResponse<Parse>(null, response, type, _debug, className);
     } on Exception catch (e) {
       return handleException(e, type, _debug, className);
